@@ -1,0 +1,20 @@
+# Microsoft Dynamics 365 Finance and Operations Apps
+/.vs
+*
+!/DynamicsCon
+!/DynamicsCon/DynamicsCon
+!/Dynamicscon/Descriptor
+/DynamicsCon/bin
+/DynamicsCon/XppMetadata
+/DynamicsCon/XppMetadata
+/DynamicsCon/Resources
+!AXModulesBuild.proj
+BuildProjectResult.err.xml
+BuildProjectResult.log
+BuildProjectResult.xml
+BuildModelResult.log
+BuildModelResult.xml
+CompileLabels.xml
+!/VSProjects
+!.gitignore
+/VSProjects/*/.vs
