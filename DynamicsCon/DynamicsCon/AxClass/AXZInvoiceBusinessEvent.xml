@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>AXZInvoiceBusinessEvent</Name>
+	<SourceCode>
+		<Declaration><![CDATA[
+[AXZCustomBusinessEvent('Dynamics.365.InvoiceCreated'),
+BusinessEvents(classStr(AXZInvoiceBusinessEventContract),
+    "Factura Creada",
+    "Evento que se lanza cuando se registra una factura de servicios",
+    ModuleAxapta::Customer)]
+public class AXZInvoiceBusinessEvent extends BusinessEventsBase
+{
+    private CustInvoiceTable	custInvoiceTable;
+
+}
+]]></Declaration>
+		<Methods>
+			<Method>
+				<Name>newFromCustInvoiceTable</Name>
+				<Source><![CDATA[
+    public static AXZInvoiceBusinessEvent newFromCustInvoiceTable(CustInvoiceTable _custInvoiceTable)
+    {
+        AXZInvoiceBusinessEvent	businessEvent	= new AXZInvoiceBusinessEvent();
+ 
+        businessEvent.parmCustInvoiceTable(_custInvoiceTable);
+        return businessEvent;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmCustInvoiceTable</Name>
+				<Source><![CDATA[
+    private CustInvoiceTable parmCustInvoiceTable(CustInvoiceTable _custInvoiceTable = custInvoiceTable)
+    {
+        custInvoiceTable	= _custInvoiceTable;
+ 
+        return custInvoiceTable;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>new</Name>
+				<Source><![CDATA[
+    private void new()
+    {
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>buildContract</Name>
+				<Source><![CDATA[
+    [Wrappable(true), Replaceable(true)]
+    public BusinessEventsContract buildContract()
+    {
+        return AXZInvoiceBusinessEventContract::newFromCustInvoiceTable(custInvoiceTable);
+    }
+
+]]></Source>
+			</Method>
+		</Methods>
+	</SourceCode>
+</AxClass>

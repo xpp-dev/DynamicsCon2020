@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>AXZSerializeCustomJsonFormat</Name>
+	<SourceCode>
+		<Declaration><![CDATA[
+class AXZSerializeCustomJsonFormat
+{
+}
+]]></Declaration>
+		<Methods>
+			<Method>
+				<Name>getSerializedCustomContract</Name>
+				<Source><![CDATA[
+    public static str getSerializedCustomContract(BusinessEventsId _businessEventId, EventTypeDescription _customEventType, ClassName _businessEventContractClass, str _serializedContract)
+    {
+        AXZCustomDataContract			customDataContract;
+        BusinessEventsContract			businessEventsContract;
+        str								customSerializedContract;
+       
+        // Payload
+        businessEventsContract		= FormJsonSerializer::deserializeObject(className2Id(_businessEventContractClass), _serializedContract);
+        
+        // CustomContract
+        customDataContract			= AXZCustomDataContract::construct();
+        customDataContract.parmEventType(_customEventType);
+        customDataContract.parmData(businessEventsContract);
+        customDataContract.parmEventTime(AXZSerializeCustomJsonFormat::getDateTimeStr());
+  
+        customSerializedContract	= FormJsonSerializer::serializeClass(customDataContract);
+
+        return customSerializedContract;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>getDateTimeStr</Name>
+				<Source><![CDATA[
+    private static str getDateTimeStr()
+    {
+        UtcDateTime	dateTimeNow	= DateTimeUtil::applyTimeZoneOffset(DateTimeUtil::utcNow(), DateTimeUtil::getCompanyTimeZone());
+        str			dateTimeStr	= strReplace(DateTimeUtil::toStr(dateTimeNow), ' ', 'T');
+
+        return dateTimeStr;
+    }
+
+]]></Source>
+			</Method>
+		</Methods>
+	</SourceCode>
+</AxClass>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>BusinessEventsCommitLogDynamicsCon_Extension</Name>
+	<SourceCode>
+		<Declaration><![CDATA[
+[ExtensionOf(tableStr(BusinessEventsCommitLog))]
+final class BusinessEventsCommitLogDynamicsCon_Extension
+{
+}
+]]></Declaration>
+		<Methods>
+			<Method>
+				<Name>insert</Name>
+				<Source><![CDATA[
+    public void insert()
+    {
+        BusinessEventsTable	businessEventsTable;
+
+        select firstonly AXZCustomPayload, AXZEventType, Contract 
+            from businessEventsTable
+            where businessEventsTable.BusinessEventId	== this.BusinessEventId;
+
+        if (businessEventsTable.AXZCustomPayload)
+        {
+            this.SerializedContract	= AXZSerializeCustomJsonFormat::getSerializedCustomContract(this.BusinessEventId, businessEventsTable.AXZEventType, businessEventsTable.Contract, this.SerializedContract);
+        }
+
+        next insert();
+    }
+
+]]></Source>
+			</Method>
+		</Methods>
+	</SourceCode>
+</AxClass>

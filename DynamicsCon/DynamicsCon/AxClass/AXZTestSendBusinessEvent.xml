@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>AXZTestSendBusinessEvent</Name>
+	<SourceCode>
+		<Declaration><![CDATA[
+class AXZTestSendBusinessEvent
+{
+}
+]]></Declaration>
+		<Methods>
+			<Method>
+				<Name>main</Name>
+				<Source><![CDATA[
+    public static void main(Args _args)
+    {
+        CustInvoiceTable	custInvoiceTable;
+
+        select firstonly custInvoiceTable;
+
+        if (custInvoiceTable.RecId && BusinessEventsConfigurationReader::isBusinessEventEnabled(classStr(AXZCustomerCreatedBusinessEvent)))
+        {
+            AXZInvoiceBusinessEvent::newFromCustInvoiceTable(custInvoiceTable).send();
+        }
+    }
+
+]]></Source>
+			</Method>
+		</Methods>
+	</SourceCode>
+</AxClass>

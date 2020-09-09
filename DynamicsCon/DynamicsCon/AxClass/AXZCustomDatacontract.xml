@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>AXZCustomDatacontract</Name>
+	<SourceCode>
+		<Declaration><![CDATA[
+[DataContract]
+class AXZCustomDataContract
+{
+    private str                     eventType;
+    private str						eventTime;
+    private BusinessEventsContract	data;
+
+}
+]]></Declaration>
+		<Methods>
+			<Method>
+				<Name>parmEventType</Name>
+				<Source><![CDATA[
+    [DataMember('EventType')]
+    public str parmEventType(str _eventType = eventType)
+    {
+        eventType	= _eventType;
+        return eventType;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmEventTime</Name>
+				<Source><![CDATA[
+    [DataMember('EventTime')]
+    public str parmEventTime(str _eventTime = eventTime)
+    {
+        eventTime	= _eventTime;
+        return eventTime;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmData</Name>
+				<Source><![CDATA[
+    [DataMember('Data')]
+    public BusinessEventsContract parmData(BusinessEventsContract _data = data)
+    {
+        data	= _data;
+        return data;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>construct</Name>
+				<Source><![CDATA[
+    public static AXZCustomDataContract construct()
+    {
+        AXZCustomDataContract	customDataContract	= new AXZCustomDataContract();
+
+        return customDataContract;
+    }
+
+]]></Source>
+			</Method>
+		</Methods>
+	</SourceCode>
+</AxClass>

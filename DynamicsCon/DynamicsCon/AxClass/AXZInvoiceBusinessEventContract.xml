@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>AXZInvoiceBusinessEventContract</Name>
+	<SourceCode>
+		<Declaration><![CDATA[
+[DataContract]
+class AXZInvoiceBusinessEventContract extends BusinessEventsContract
+{
+    private CustAccount	    custAccount;
+    private CustInvoiceId	custInvoiceId;
+ 
+}
+]]></Declaration>
+		<Methods>
+			<Method>
+				<Name>initialize</Name>
+				<Source><![CDATA[
+    private void initialize(CustInvoiceTable _custInvoiceTable)
+    {
+        custAccount		= _custInvoiceTable.InvoiceAccount;
+        custInvoiceId	= _custInvoiceTable.InvoiceId;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>newFromCustInvoiceTable</Name>
+				<Source><![CDATA[
+    public static AXZInvoiceBusinessEventContract newFromCustInvoiceTable(CustInvoiceTable _custInvoiceTable)
+    {
+        AXZInvoiceBusinessEventContract contract = new AXZInvoiceBusinessEventContract();
+        contract.initialize(_custInvoiceTable);
+        return contract;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>new</Name>
+				<Source><![CDATA[
+    private void new()
+    {
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmCustAccount</Name>
+				<Source><![CDATA[
+    [DataMember('CustAccount'), BusinessEventsDataMember("@SYS7149")]
+    public CustAccount parmCustAccount(CustAccount _custAccount = custAccount)
+    {
+        custAccount	= _custAccount;
+        return custAccount;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmCustInvoiceId</Name>
+				<Source><![CDATA[
+    [DataMember('InvoiceId'), BusinessEventsDataMember("@SYS12128")]
+    public CustInvoiceId parmCustInvoiceId(CustInvoiceId _custInvoiceId = custInvoiceId)
+    {
+        custInvoiceId	= _custInvoiceId;
+        return custInvoiceId;
+    }
+
+]]></Source>
+			</Method>
+		</Methods>
+	</SourceCode>
+</AxClass>

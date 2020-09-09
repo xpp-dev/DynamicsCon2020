@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>AXZUtils</Name>
+	<SourceCode>
+		<Declaration><![CDATA[
+using Microsoft.Dynamics.AX.Framework.Utilities;
+using Microsoft.Dynamics.@Client.ServerForm.Contexts;
+
+class AXZUtils
+{
+}
+]]></Declaration>
+		<Methods>
+			<Method>
+				<Name>generateRecordUrlFromCustTable</Name>
+				<Source><![CDATA[
+    public static str generateRecordUrlFromCustTable(CustTable _custTable)
+    {
+        str             menuItemName		= menuItemDisplayStr(CustTableListPage);
+        MenuItemType    menuItemType		= MenuItemType::Display;
+        DataSourceName  dataSourceName		= formDataSourceStr(CustTable, CustTable);
+
+        TableId			tableId				= _custTable.TableId;
+        DictTable		dictTable			= new DictTable(tableId);
+        DictIndex		dictIndex			= new DictIndex(tableId, dictTable.primaryIndex());
+ 
+        int				fieldCount			= dictIndex.numberOfFields();
+        Map				indexFieldValuesMap = new Map(Types::String, Types::String);
+        Common			record              = _custTable;
+        FieldId			primaryKeyFieldId;
+ 
+        for (int fieldIndex = 1; fieldIndex <= fieldCount; fieldIndex++)
+        {
+            primaryKeyFieldId = dictIndex.field(fieldIndex);
+ 
+            indexFieldValuesMap.insert(fieldId2Name(tableId, primaryKeyFieldId), any2Str(record.(primaryKeyFieldId)));        
+        }
+ 
+        return AXZUtils::generateRecordUrl(menuItemName, menuItemType, dataSourceName, record.RecId, record.DataAreaId);
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>generateRecordUrl</Name>
+				<Source><![CDATA[
+    public static str generateRecordUrl(str _menuItemName, MenuItemType _menuItemType, DataSourceName _dataSourceName, RecId _recId, DataAreaId _dataAreaId = curExt())
+    {
+        System.Uri host                     = SessionContext::Get_Current().Get_RequestUrl();
+        UrlHelper.UrlGenerator generator    = new UrlHelper.UrlGenerator();
+        generator.MenuItemName              = _menuItemName;
+        generator.MenuItemType              = _menuItemType;
+        generator.HostUrl                   = host.GetLeftPart(System.UriPartial::Path);
+        generator.Company                   = _dataAreaId;
+        generator.Partition					= "initial";
+        generator.EncryptRequestQuery       = true;
+ 
+        if (_dataSourceName && _recId)
+        {
+            var requestQueryParameterCollection = generator.RequestQueryParameterCollection;
+            
+            requestQueryParameterCollection.AddRequestQueryParameter(_dataSourceName, "RecId", int642Str(_recId));
+        }
+  
+        return generator.GenerateFullUrl().AbsoluteUri;
+    }
+
+]]></Source>
+			</Method>
+		</Methods>
+	</SourceCode>
+</AxClass>

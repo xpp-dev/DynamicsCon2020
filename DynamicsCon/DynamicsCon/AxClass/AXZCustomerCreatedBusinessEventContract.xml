@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>AXZCustomerCreatedBusinessEventContract</Name>
+	<SourceCode>
+		<Declaration><![CDATA[
+[DataContract]
+class AXZCustomerCreatedBusinessEventContract extends BusinessEventsContract
+{
+    CustAccount custAccount;
+    DataAreaId  dataAreaId;
+    str         viewUrl;
+
+}
+]]></Declaration>
+		<Methods>
+			<Method>
+				<Name>newFromCustTable</Name>
+				<Source><![CDATA[
+    public static AXZCustomerCreatedBusinessEventContract newFromCustTable(CustTable _custTable)
+    {
+        var contract = new AXZCustomerCreatedBusinessEventContract();
+
+        contract.initialize(_custTable);
+
+        return contract;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>initialize</Name>
+				<Source><![CDATA[
+    private void initialize(CustTable _custTable)
+    {
+        custAccount = _custTable.AccountNum;
+        dataAreaId  = _custTable.DataAreaId;
+        viewUrl     = AXZUtils::generateRecordUrlFromCustTable(_custTable);
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>new</Name>
+				<Source><![CDATA[
+    private void new()
+    {
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmCustAccount</Name>
+				<Source><![CDATA[
+    [DataMember('CustAccount'), BusinessEventsDataMember("Customer account")]
+    public CustAccount parmCustAccount(CustAccount _custAccount = custAccount)
+    {
+        custAccount = _custAccount;
+
+        return custAccount;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmDataAreaId</Name>
+				<Source><![CDATA[
+    [DataMember('DataAreaId'), BusinessEventsDataMember("Company")]
+    public DataAreaId parmDataAreaId(DataAreaId _dataAreaId = dataAreaId)
+    {
+        dataAreaId = _dataAreaId;
+
+        return dataAreaId;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmViewUrl</Name>
+				<Source><![CDATA[
+    [DataMember('ViewUrl'), BusinessEventsDataMember("View Url")]
+    public str parmViewUrl(str _viewUrl = viewUrl)
+    {
+        viewUrl = _viewUrl;
+
+        return viewUrl;
+    }
+
+]]></Source>
+			</Method>
+		</Methods>
+	</SourceCode>
+</AxClass>

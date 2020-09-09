@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>BusinessEventsCatalogHelperDynamicsCon_Extension</Name>
+	<SourceCode>
+		<Declaration><![CDATA[
+[ExtensionOf(classStr(BusinessEventsCatalogHelper))]
+final class BusinessEventsCatalogHelperDynamicsCon_Extension
+{
+}
+]]></Declaration>
+		<Methods>
+			<Method>
+				<Name>addCodeBusinessEvents</Name>
+				<Source><![CDATA[
+    public static void addCodeBusinessEvents()
+    {
+        BusinessEventsTable	businessEventsTable;
+
+        next addCodeBusinessEvents();
+  
+        Array customEvents	= new Array(Types::Integer);
+        customEvents		= DictClass::getAttributedClasses(classStr(AXZCustomBusinessEventAttribute));
+
+        ttsbegin;
+
+        for (int i = 1; i <= customEvents.lastIndex(); i++)
+        {
+            SysDictClass					businessEventDictClass	= new SysDictClass(customEvents.value(i));
+            AXZCustomBusinessEventAttribute	businessEventsAttribute = businessEventDictClass.getAttribute(classStr(AXZCustomBusinessEventAttribute));
+            BusinessEventsId				businessEventId			= businessEventDictClass.name();
+            
+            select firstonly forupdate businessEventsTable
+                where businessEventsTable.BusinessEventId	== businessEventId;
+
+            if (businessEventsTable.RecId)
+            {
+                businessEventsTable.AXZCustomPayload	= NoYes::Yes;
+                businessEventsTable.AXZEventType	    = businessEventsAttribute.getEventType();
+                businessEventsTable.update();
+            }
+        }
+
+        ttscommit;
+    }
+
+]]></Source>
+			</Method>
+		</Methods>
+	</SourceCode>
+</AxClass>

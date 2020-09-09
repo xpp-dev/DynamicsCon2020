@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>AXZCustomerCreatedBusinessEvent</Name>
+	<SourceCode>
+		<Declaration><![CDATA[
+[
+    BusinessEvents(classStr(AXZCustomerCreatedBusinessEventContract), 
+        'Customer created', 
+        'After a customer is created',
+        ModuleAxapta::Customer)
+]
+class AXZCustomerCreatedBusinessEvent extends BusinessEventsBase
+{
+    private CustTable custTable;
+
+}
+]]></Declaration>
+		<Methods>
+			<Method>
+				<Name>parmCustTable</Name>
+				<Source><![CDATA[
+    private CustTable parmCustTable(CustTable _custTable = custTable)
+    {
+        custTable = _custTable;
+
+        return custTable;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>newFromCustTable</Name>
+				<Source><![CDATA[
+    public static AXZCustomerCreatedBusinessEvent newFromCustTable(CustTable _custTable)
+    {
+        AXZCustomerCreatedBusinessEvent businessEvent = new AXZCustomerCreatedBusinessEvent();
+
+        businessEvent.parmCustTable(_custTable);
+
+        return businessEvent;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>new</Name>
+				<Source><![CDATA[
+    private void new()
+    {
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>buildContract</Name>
+				<Source><![CDATA[
+    [Wrappable(true), Replaceable(true)]
+    public BusinessEventsContract buildContract()
+    {
+        return AXZCustomerCreatedBusinessEventContract::newFromCustTable(custTable);
+    }
+
+]]></Source>
+			</Method>
+		</Methods>
+	</SourceCode>
+</AxClass>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>CustTableDynamicsCon_Extension</Name>
+	<SourceCode>
+		<Declaration><![CDATA[
+[ExtensionOf(tableStr(CustTable))]
+final class CustTableDynamicsCon_Extension
+{
+}
+]]></Declaration>
+		<Methods>
+			<Method>
+				<Name>insert</Name>
+				<Source><![CDATA[
+    void insert(DirPartyType _partyType, Name _name, boolean _updateCRM)
+    {
+        this.Blocked = CustVendorBlocked::All;
+
+        next insert(_partyType, _name, _updateCRM);
+
+        if (BusinessEventsConfigurationReader::isBusinessEventEnabled(classStr(AXZCustomerCreatedBusinessEvent)))
+        {
+            AXZCustomerCreatedBusinessEvent::newFromCustTable(this).send();
+        }
+    }
+
+]]></Source>
+			</Method>
+		</Methods>
+	</SourceCode>
+</AxClass>
